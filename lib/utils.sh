@@ -37,9 +37,6 @@ download_perl_build() {
     git clone https://github.com/tokuhirom/Perl-Build.git $build_dir >&2 >/dev/null
     (cd $build_dir; git checkout $PERL_BUILD_TAG >&2 >/dev/null)
 
-    # Install in the perl-build dir
-    PREFIX="$(perl_build_dir)" $build_dir/install.sh
-
     # Remove perl-build source dir
     rm -rf $build_dir
 }
