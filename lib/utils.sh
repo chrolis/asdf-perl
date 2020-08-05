@@ -28,17 +28,11 @@ ensure_perl_build_installed() {
 download_perl_build() {
     # Print to stderr so asdf doesn't assume this string is a list of versions
     echoerr "Downloading perl-build..."
-    local build_dir="$(perl_build_source_dir)"
-
-    # Remove directory in case it still exists from last download
-    rm -rf $build_dir
+    local build_dir="$(perl_build_dir)"
 
     # Clone down and checkout the correct perl-build version
     git clone https://github.com/tokuhirom/Perl-Build.git $build_dir >&2 >/dev/null
     (cd $build_dir; git checkout $PERL_BUILD_TAG >&2 >/dev/null)
-
-    # Remove perl-build source dir
-    rm -rf $build_dir
 }
 
 
@@ -48,10 +42,6 @@ asdf_perl_plugin_path() {
 
 perl_build_dir() {
     echo "$(asdf_perl_plugin_path)/perl-build"
-}
-
-perl_build_source_dir() {
-    echo "$(asdf_perl_plugin_path)/perl-build-source"
 }
 
 perl_build_path() {
