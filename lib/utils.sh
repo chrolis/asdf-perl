@@ -45,5 +45,5 @@ perl_build_dir() {
 }
 
 perl_build_path() {
-    echo "$(perl_build_dir)/bin/perl-build"
+    echo "$(perl_build_dir)/perl-build"
 }
