@@ -11,13 +11,17 @@ install_perl() {
     local version=$2
     local install_path=$3
 
+    local jobs
+
     if [ "$install_type" != "version" ]; then
         echoerr "Cannot install specific ref from source, sorry."
         echoerr "For a list of available versions, see \`asdf list-all perl\`"
         exit 1
     fi
 
-    $(perl_build_path) "$version" "$install_path" > /dev/null
+    jobs=$(getconf _NPROCESSORS_ONLN)
+    $(perl_build_path) --jobs "$jobs" "$version" "$install_path" > /dev/null
+
     curl -s -L http://cpanmin.us/ | "${install_path}/bin/perl" - App::cpanminus
 }
 
