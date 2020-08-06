@@ -1,5 +1,4 @@
 PERL_BUILD_VERSION="${ASDF_PERL_BUILD_VERSION:-1.31}"
-PERL_BUILD_TAG="${PERL_BUILD_VERSION}"
 
 echoerr() {
     >&2 echo -e "\033[0;31m$1\033[0m"
@@ -17,10 +16,7 @@ ensure_perl_build_installed() {
     else
         current_perl_build_version="$("$(perl_build_path)" --version | cut -d ' ' -f2)"
         if [ "$current_perl_build_version" != "$PERL_BUILD_VERSION" ]; then
-            # If the perl-build directory already exists and the version does not
-            # match, remove it and download the correct version
-            rm -rf "$(perl_build_dir)"
-            download_perl_build
+            update_perl_build
         fi
     fi
 }
@@ -32,9 +28,24 @@ download_perl_build() {
 
     # Clone down and checkout the correct perl-build version
     git clone https://github.com/tokuhirom/Perl-Build.git $build_dir >&2 >/dev/null
-    (cd $build_dir; git checkout $PERL_BUILD_TAG >&2 >/dev/null)
+    checkout_perl_build
 }
 
+update_perl_build() {
+    echoerr "Updating perl-build..."
+    local build_dir="$(perl_build_dir)"
+    (cd $build_dir; git checkout master; git pull)
+    checkout_perl_build
+}
+
+checkout_perl_build() {
+    local build_dir="$(perl_build_dir)"
+    (cd $build_dir; git checkout $(git rev-list --topo-order ${PERL_BUILD_VERSION}..HEAD | tail -1) >&2 >/dev/null)
+}
+
+switch_perl_build() {
+    local build_dir="$(perl_build_dir)"
+}
 
 asdf_perl_plugin_path() {
     echo "$(dirname "$(dirname "$0")")"
