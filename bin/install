@@ -23,7 +23,7 @@ install_perl() {
     $(perl_build_path) --jobs "$jobs" "$version" "$install_path"
 
     echoerr "Installing cpanm ..."
-    curl -s -L http://cpanmin.us/ | "${install_path}/bin/perl" - App::cpanminus
+    curl -s -L http://cpanmin.us/ | "${install_path}/bin/perl" - --notest App::cpanminus
 }
 
 install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
