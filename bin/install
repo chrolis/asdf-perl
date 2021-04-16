@@ -26,4 +26,24 @@ install_perl() {
     curl -s -L http://cpanmin.us/ | "${install_path}/bin/perl" - --notest App::cpanminus
 }
 
+install_default_modules() {
+    local install_path=$1
+    local default_modules_file="${ASDF_PERL_DEFAULT_MODULES_FILE:=$HOME/.default-perl-modules}"
+
+    if [ ! -f "$default_modules_file" ]; then return; fi
+
+    while read -r name; do
+        >&2 echo -ne "Installing \033[33m${name}\033[39m ... "
+        "${install_path}/bin/cpanm" --notest "$name" > /dev/null && rc=$? || rc=$?
+        if [[ $rc -eq 0 ]]; then
+            >&2 echo -e "\033[32mSUCCESS\033[39m"
+        else
+            >&2 echo -e "\033[31mFAIL\033[39m"
+        fi
+    done < "$default_modules_file"
+}
+
 install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+ASDF_SKIP_RESHIM=1 install_default_modules "$ASDF_INSTALL_PATH"
+
+asdf reshim perl "$ASDF_INSTALL_VERSION"
