@@ -4,6 +4,10 @@ set -ue -o pipefail
 # shellcheck source=../lib/utils.sh
 source "$(dirname "$0")/../lib/utils.sh"
 
+# Securing cpanm
+# http://blogs.perl.org/users/neilb/2021/11/addressing-cpan-vulnerabilities-related-to-checksums.html
+export PERL_CPANM_OPT="--from https://cpan.metacpan.org"
+
 install_perl() {
     ensure_perl_install_setup
 
