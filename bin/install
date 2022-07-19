@@ -19,7 +19,7 @@ install_perl() {
         exit 1
     fi
 
-    jobs=$(getconf _NPROCESSORS_ONLN)
+    jobs=${ASDF_CONCURRENCY:-$(getconf _NPROCESSORS_ONLN)}
     $(perl_install_bin) --jobs "$jobs" "$version" "$install_path"
 
     echoerr "Installing cpanm ..."
