@@ -5,8 +5,8 @@ set -euo pipefail
 source "$(dirname $0)/../lib/utils.sh"
 
 list_versions() {
-  ensure_perl_build_setup
-  "$(perl_build_path)" --definitions | paste -sd " " -
+  ensure_perl_install_setup
+  "$(perl_install_bin)" --list-all | paste -sd " " -
 }
 
 list_versions

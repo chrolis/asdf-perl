@@ -5,7 +5,7 @@ set -ue -o pipefail
 source "$(dirname "$0")/../lib/utils.sh"
 
 install_perl() {
-    ensure_perl_build_setup
+    ensure_perl_install_setup
 
     local install_type=$1
     local version=$2
@@ -20,7 +20,7 @@ install_perl() {
     fi
 
     jobs=$(getconf _NPROCESSORS_ONLN)
-    $(perl_build_path) --jobs "$jobs" "$version" "$install_path"
+    $(perl_install_bin) --jobs "$jobs" "$version" "$install_path"
 
     echoerr "Installing cpanm ..."
     curl -s -L http://cpanmin.us/ | "${install_path}/bin/perl" - --notest App::cpanminus
