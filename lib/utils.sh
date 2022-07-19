@@ -45,7 +45,7 @@ is_perl_install_invalidated() {
 }
 
 asdf_perl_plugin_path() {
-    echo "$(dirname "$(dirname "$0")")"
+    dirname "$(dirname "$0")"
 }
 
 perl_install_dir() {
